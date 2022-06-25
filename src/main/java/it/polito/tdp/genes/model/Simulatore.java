@@ -58,7 +58,9 @@ public class Simulatore {
 			if(Math.random()<0.3) {
 				this.coda.add(new Evento(e.getTime()+1, e.getIng(), e.getG())); //continuoAstudiareLoStessoGene
 			}else {
-				
+				Genes scelto = geneScelto(e.getG());
+				this.coda.add(new Evento(e.getTime()+1, e.getIng(), scelto));
+				e.getIng().setGene(scelto);
 			}
 		}
 		
@@ -70,7 +72,7 @@ public class Simulatore {
 		double somma = 0.0;
 		List<Double> percentuali = new LinkedList<>();
 		Genes scelto = null;
-		List<Double> percCum = new LinkedList<>();
+		
 		
 		for(Genes ge : vicini) {
 			somma += this.grafo.getEdgeWeight(this.grafo.getEdge(g, ge));
@@ -79,16 +81,14 @@ public class Simulatore {
 		for(Genes ge : vicini) {
 			percentuali.add(this.grafo.getEdgeWeight(this.grafo.getEdge(g, ge))/somma);
 		}
-		
-		for(Double p : percentuali) {
-			
-		}
-		
-		double cum = 0;
+		double sommaC =0.0;
 		for(int i=0; i<vicini.size(); i++) {
-			if(ca)
+			sommaC += percentuali.get(i);
+			if(caso < sommaC) {
+				scelto = vicini.get(i);
+				break;
+			}
 		}
-		
 		return scelto;
 	}
 	
